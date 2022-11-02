@@ -9,7 +9,7 @@ stages:
     params:
       params.yaml:
         base:
-          random_state: 42
+          random_state: 45
           log_level: INFO
         data_load:
           dataset_csv: data/raw/iris.csv
@@ -29,7 +29,7 @@ stages:
     params:
       params.yaml:
         base:
-          random_state: 42
+          random_state: 45
           log_level: INFO
         featurize:
           features_path: data/processed/featured_iris.csv
@@ -50,7 +50,7 @@ stages:
     params:
       params.yaml:
         base:
-          random_state: 42
+          random_state: 45
           log_level: INFO
         data_split:
           test_size: 0.2
@@ -61,24 +61,24 @@ stages:
           target_column: target
     outs:
     - path: data/processed/test_iris.csv
-      md5: b5e45593a772fc66629488e1806505c4
-      size: 1492
+      md5: 7b08f6c9f366d5d4ea942254750d08e2
+      size: 1513
     - path: data/processed/train_iris.csv
-      md5: ed8a7e5ba0a211251bdee6c498fe3eb4
-      size: 5724
+      md5: b5caee98255bb90f150ce23e7b55a37d
+      size: 5703
   train:
     cmd: python -m src.stages.train --config=params.yaml
     deps:
     - path: data/processed/train_iris.csv
-      md5: ed8a7e5ba0a211251bdee6c498fe3eb4
-      size: 5724
+      md5: b5caee98255bb90f150ce23e7b55a37d
+      size: 5703
     - path: src/stages/train.py
       md5: 0f01f271bc8169c69ce724f19eacde07
       size: 1371
     params:
       params.yaml:
         base:
-          random_state: 42
+          random_state: 45
           log_level: INFO
         train:
           cv: 3
@@ -110,16 +110,16 @@ stages:
           model_path: models/model.joblib
     outs:
     - path: models/model.joblib
-      md5: e659ba20b8a8b9d9ba03b1358b794407
+      md5: ec9427a65ea53e09fe3e5b9b63278a6b
       size: 2669
   evaluate:
     cmd: python -m src.stages.evaluate --config=params.yaml
     deps:
     - path: data/processed/test_iris.csv
-      md5: b5e45593a772fc66629488e1806505c4
-      size: 1492
+      md5: 7b08f6c9f366d5d4ea942254750d08e2
+      size: 1513
     - path: models/model.joblib
-      md5: e659ba20b8a8b9d9ba03b1358b794407
+      md5: ec9427a65ea53e09fe3e5b9b63278a6b
       size: 2669
     - path: src/stages/evaluate.py
       md5: e845a44aa40bffa0b20b08a7d854e999
@@ -132,8 +132,8 @@ stages:
           confusion_matrix_image: confusion_matrix.png
     outs:
     - path: reports/confusion_matrix.png
-      md5: 64609d4d2fe8d2718531f253d881dde6
-      size: 24999
+      md5: 1b03e869c77538cdcb5cad70da072d6b
+      size: 25032
     - path: reports/metrics.json
-      md5: d533847a0ca14ca93752b1b1f1df349e
+      md5: d3efc78e6e16ebe34188d0567b847ee6
       size: 32
